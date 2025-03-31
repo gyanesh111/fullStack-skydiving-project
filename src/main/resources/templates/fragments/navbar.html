@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/springsecurity">
+<head>
+
+</head>
+
+<body>
+
+<nav class="navbar" th:fragment="navbarFragment">
+   <ul>
+        <li><a class="username" sec:authorize="isAuthenticated()" th:text="${#authentication.name}"> </a>
+        <li><a class="logout" th:href="@{/logout}" sec:authorize="isAuthenticated()">Exit</a>
+   </ul>
+ </nav>
+
+ </body>
+ </html>

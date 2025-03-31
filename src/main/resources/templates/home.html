@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skydiving Logbook - Home</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+
+
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+<div th:replace="~{fragments/navbar :: navbarFragment}"></div>
+
+    <main>
+        <section class="home-section">
+            <h1>Skydiving Jumps Logbook</h1>
+            <table class="jump-table">
+                <!-- Header Row -->
+                <thead>
+                    <tr>
+                        <th>Jump Number</th>
+<!--                        <th>Jump Icon</th>-->
+                        <th>Date</th>
+                        <th>Type of Jump</th>
+                        <th>Dropzone</th>
+                        <th>Exit Altitude</th>
+                        <th>Freefall Seconds</th>
+                        <th>Aircraft</th>
+                        <th class="notes-column">Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <!-- Iterates through jumpsPage.content to generate table rows -->
+                    <tr th:each="jump : ${jumpsPage.content}">
+                        <td th:text="${jump.id}"></td>
+<!--                        <td><div class="jump-icon"><img src="images/FormationSketchTransparent.png" alt="Icon" class="icon"></div></td>--> <!--TODO Future Feature: Auto-Change the icon according to the Jumptype-->
+                        <td th:text="${#dates.format(jump.jumpDate,'dd-MM-YYYY')}"></td>
+                        <td th:text="${jump.jumptype}"></td>
+                        <td th:text="${jump.dropzone}"></td>
+                        <td th:text="${jump.altitude}"></td>
+                        <td th:text="${jump.freefallduration}"></td>
+                        <td th:text="${jump.aircraft}"></td>
+                        <td th:text="${jump.jumpNotes}"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="pagination-controls">
+                <!-- Link to first page (disabled if already on the first page) -->
+                <a th:if="${currentPage > 0}" th:href="@{/(page=0, size=${jumpsPage.size})}">&#x25C0; First</a>
+                <span th:if="${currentPage == 0}" class="disabled">&#x25C0; First</span>
+
+                <!-- Link to previous page (disabled if already on the first page) -->
+                <a th:if="${currentPage > 0}" th:href="@{/(page=${currentPage - 1}, size=${jumpsPage.size})}"> &larr; Prev</a>
+                <span th:if="${currentPage == 0}" class="disabled">&larr; Prev</span>
+
+                <!-- Display current page / total pages -->
+                <span th:text="${currentPage + 1} + ' / ' + ${totalPages}"></span>
+
+                <!-- Link to next page (disabled if on the last page) -->
+                <a th:if="${currentPage + 1 < totalPages}" th:href="@{/(page=${currentPage + 1}, size=${jumpsPage.size})}">Next &rarr;</a>
+                <span th:if="${currentPage + 1 == totalPages}" class="disabled">Next &rarr;</span>
+
+                <!-- Link to last page (disabled if already on the last page) -->
+                <a th:if="${currentPage + 1 < totalPages}" th:href="@{/(page=${totalPages - 1}, size=${jumpsPage.size})}">Last &#x25B6;</a>
+                <span th:if="${currentPage + 1 == totalPages}" class="disabled">Last &#x25B6;</span>
+            </div>
+
+            <!-- Green Button -->
+            <div class="button-container">
+                <a th:href="@{/jump}" class="green-button">Click Here to Log your Jump</a>
+            </div>
+        </section>
+    </main>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+</body>
+</html>
